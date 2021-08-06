@@ -47,7 +47,7 @@ Calculate using image locators
     RPA.Desktop.Windows.Close All Applications
 
 *** Tasks ***
-Run
+Run Examples
     Calculate using app ids
     Calculate using image locators
 

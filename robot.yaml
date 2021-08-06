@@ -1,8 +1,6 @@
 tasks:
-  Simple Addition:
-    robotTaskName: Calculate and log the result
-  Type to notepad:
-    robotTaskName: Type to Notepad
+  Simple Calculator Demo:
+    shell: python -m robot --report NONE --outputdir output --logtitle "Task log" tasks.robot
 
 condaConfigFile: conda.yaml
 artifactsDir: output
