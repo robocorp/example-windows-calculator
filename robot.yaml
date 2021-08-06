@@ -1,0 +1,14 @@
+tasks:
+  Simple Addition:
+    robotTaskName: Calculate and log the result
+  Type to notepad:
+    robotTaskName: Type to Notepad
+
+condaConfigFile: conda.yaml
+artifactsDir: output
+PATH:
+  - .
+PYTHONPATH:
+  - .
+ignoreFiles:
+  - .gitignore

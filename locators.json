@@ -1,0 +1,26 @@
+{
+    "5": {
+        "confidence": 83.0,
+        "path": ".images\\5-path.png",
+        "source": null,
+        "type": "image"
+    },
+    "9": {
+        "confidence": 92.0,
+        "path": ".images\\9-path.png",
+        "source": null,
+        "type": "image"
+    },
+    "eq": {
+        "confidence": 82.0,
+        "path": ".images\\eq-path.png",
+        "source": null,
+        "type": "image"
+    },
+    "plus": {
+        "confidence": 91.0,
+        "path": ".images\\plus-path.png",
+        "source": null,
+        "type": "image"
+    }
+}
