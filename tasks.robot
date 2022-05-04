@@ -1,50 +1,43 @@
 *** Settings ***
-Library           RPA.Desktop.Windows
-Library           RPA.Desktop
 Library           String
+Library           RPA.Windows             WITH NAME    Win
+Library           RPA.Desktop             WITH NAME    Desk
+Task Teardown     Desk.Close All Applications
 
 *** Keywords ***
 Open the Calculator
-    Open Executable    calc.exe    Calculator
+    Desk.Open Application    calc.exe 
+    Win.Foreground Window    Calculator
 
-
-*** Keywords ***
 Add two numbers using app ids
     [Arguments]    ${first}    ${second}
-    Mouse Click    id:clearEntryButton
-    Mouse Click    id:num${first}Button
-    Mouse Click    id:plusButton
-    Mouse Click    id:num${second}Button
-    Mouse Click    id:equalButton
+    Win.Click    id:clearEntryButton
+    Win.Click    id:num${first}Button
+    Win.Click    id:plusButton
+    Win.Click    id:num${second}Button
+    Win.Click    id:equalButton
 
-*** Keywords ***
-Read the result
-    ${result}=    Get Element Rich Text    id:CalculatorResults
-    ${_}    ${result}=    Split String From Right    ${result}    max_split=1
-    [Return]    ${result}
+Log the result
+    ${result}=    Win.Get Text   id:CalculatorResults
+    Log    ${result}
 
-*** Keywords ***
 Calculate using app ids
     Open the Calculator
     Add two numbers using app ids    9    5
-    ${result}=    Read the result
-    Log    ${result}
-    Screenshot   ids.png   overwrite=True
-    RPA.Desktop.Windows.Close All Applications
+    Log the result
+    Win.Screenshot    Calculator   ids.png
+    Desk.Close All Applications
 
-
-*** Keywords ***
 Calculate using image locators
     Open the Calculator
-    Click    alias:9
-    Click    alias:plus
-    Click    alias:5
-    Click    alias:eq
-    
-    ${result}=    Read the result
-    Log    ${result}
-    Screenshot   ids.png  overwrite=True
-    RPA.Desktop.Windows.Close All Applications
+    Desk.Click    alias:9
+    Desk.Click    alias:plus
+    Desk.Click    alias:5
+    Desk.Click    alias:eq
+
+    Log the result
+    Win.Screenshot    Calculator   images.png
+    Desk.Close All Applications
 
 *** Tasks ***
 Run Examples
