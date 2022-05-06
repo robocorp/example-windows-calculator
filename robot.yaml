@@ -1,6 +1,9 @@
 tasks:
-  Simple Calculator Demo:
-    shell: python -m robot --report NONE --outputdir output --logtitle "Task log" tasks.robot
+  Id Based Calculator Demo:
+    shell: python -m robot --report NONE --outputdir output --logtitle "Task log" id-based.robot
+
+  Image Based Calculator Demo:
+    shell: python -m robot --report NONE --outputdir output --logtitle "Task log" image-based.robot
 
 condaConfigFile: conda.yaml
 artifactsDir: output
