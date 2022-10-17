@@ -17,7 +17,7 @@ Open the Calculator
 
 Add two numbers using app ids
     [Arguments]    ${first}    ${second}
-    Click    id:clearButton
+    Click    id:clearEntryButton
     Click    id:num${first}Button
     Click    id:plusButton
     Click    id:num${second}Button
