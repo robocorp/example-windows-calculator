@@ -1,7 +1,14 @@
 *** Settings ***
-Library           String
-Library           RPA.Windows
-Task Teardown     Close Window     name:Calculator
+Library             String
+Library             RPA.Windows
+
+Task Teardown       Close Window    name:Calculator
+
+
+*** Tasks ***
+Run Example
+    Calculate using app ids
+
 
 *** Keywords ***
 Open the Calculator
@@ -10,7 +17,7 @@ Open the Calculator
 
 Add two numbers using app ids
     [Arguments]    ${first}    ${second}
-    Click    id:clearEntryButton
+    Click    id:clearButton
     Click    id:num${first}Button
     Click    id:plusButton
     Click    id:num${second}Button
@@ -19,13 +26,9 @@ Add two numbers using app ids
 Log results
     ${result}=    Get Attribute    id:CalculatorResults    Name
     Log    ${result}
-    Screenshot    Calculator   %{ROBOT_ARTIFACTS}${/}id-based-result.png
+    Screenshot    Calculator    %{ROBOT_ARTIFACTS}${/}id-based-result.png
 
 Calculate using app ids
     Open the Calculator
     Add two numbers using app ids    9    5
     Log results
-
-*** Tasks ***
-Run Example
-    Calculate using app ids
