@@ -1,9 +1,9 @@
 tasks:
-  Id Based Calculator Demo:
-    shell: python -m robot --report NONE --outputdir output --logtitle "Task log" id-based.robot
+  Demo Windows Locators:
+    shell: python -m robocorp.tasks run tasks.py
 
   Image Based Calculator Demo:
-    shell: python -m robot --report NONE --outputdir output --logtitle "Task log" image-based.robot
+    shell: python -m robocorp.tasks run image-based.py
 
 condaConfigFile: conda.yaml
 artifactsDir: output
