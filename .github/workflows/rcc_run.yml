@@ -59,12 +59,12 @@ jobs:
     - name: Build env.
       shell: powershell
       run: | 
-        .\rcc.exe ht vars conda.yaml
+        .\rcc.exe ht vars conda.yaml --space github-action
         .\rcc.exe ht catalogs
   
     - name: Run task
       shell: powershell  
-      run: .\rcc.exe run --task "Demo Windows Locators with Calculator"
+      run: .\rcc.exe run --task "Demo Windows Locators with Calculator" --space github-action
 
     - uses: actions/upload-artifact@v3
       with:
