@@ -9,4 +9,4 @@ PATH:
 PYTHONPATH:
   - .
 ignoreFiles:
-  - .gitignore
+  - .pkgignore

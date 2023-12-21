@@ -64,7 +64,6 @@ jobs:
     - name: Build env.
       shell: powershell
       run: | 
-        .\rcc.exe ht catalogs
         .\rcc.exe ht vars conda.yaml
         .\rcc.exe ht catalogs
   
