@@ -51,7 +51,7 @@ def calculate_using_image_locators(first: str, second: str):
         raise e
 
 def log_results(window: WindowElement, screenshot_file: str):
-    result = window.get_value('id:CalculatorResults')
+    result = window.get_value('id:CalculatorResults or name:Result')
     log.info(result)
     result = os.path.join(os.environ.get('ROBOT_ARTIFACTS'), screenshot_file)
     window.screenshot(result)
