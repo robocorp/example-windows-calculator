@@ -26,10 +26,11 @@ jobs:
         echo "::set-output name=rcc_version::$rcc_version"
 
     - name: Cache RCC executable
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: rcc.exe
         key: ${{ runner.os }}-rcc-${{ steps.rcc-version.outputs.rcc_version }}
+        restore-keys: ${{ runner.os }}-rcc-
 
     - name: Get RCC
       shell: powershell
@@ -41,21 +42,19 @@ jobs:
           echo "Using RCC from cache."
         }
   
-    - name: Generate env. hash
-      id: generate_env_hash
-      shell: powershell
-      run: |
-        $hash = .\rcc.exe ht hash conda.yaml --silent
-        echo "Environment hash: $hash"
-        echo "::set-output name=env_hash::$hash"
-  
-    - name: Cache environment
-      uses: actions/cache@v2
+    - name: Cache hololib
+      uses: actions/cache@v3
       with:
-        path: |
-          $Env:LOCALAPPDATA\robocorp\hololib
-          $Env:LOCALAPPDATA\robocorp\holotree
-        key: ${{ runner.os }}-env-${{ steps.generate_env_hash.outputs.env_hash }}
+        path: $HOME\Appdata\Local\robocorp\hololib
+        key: ${{ runner.os }}-hololib-${{ hashFiles('**/conda.yaml') }}
+        restore-keys: ${{ runner.os }}-hololib-
+
+    - name: Cache holotree
+      uses: actions/cache@v3
+      with:
+        path: $HOME\Appdata\Local\robocorp\holotree
+        key: ${{ runner.os }}-holotree-${{ hashFiles('**/conda.yaml') }}
+        restore-keys: ${{ runner.os }}-holotree-
   
     - name: Build env.
       shell: powershell
@@ -63,11 +62,11 @@ jobs:
         .\rcc.exe ht vars conda.yaml
         .\rcc.exe ht catalogs
   
-    - name: Run
+    - name: Run task
       shell: powershell  
       run: .\rcc.exe run --task "Demo Windows Locators with Calculator"
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
-        name: log.html
-        path: output/log.html
+        name: output
+        path: ./output/**

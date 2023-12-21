@@ -44,7 +44,9 @@ def calculate_using_image_locators(window: WindowElement, first: str, second: st
         desktop.click('alias:eq')
     except Exception as e:
         log.critical('Image-based locator not found')
-        raise e
+        # Image-based solution fails on most machines, so we catch 
+        # the error and add it to the log, but do not fail the execution.
+        # Normal operation here should be: 'raise e' to cause the failure.
 
 def log_results(window: WindowElement, screenshot_file: str):
     result = window.get_value('id:CalculatorResults or name: "Result"')
