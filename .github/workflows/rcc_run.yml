@@ -38,14 +38,15 @@ jobs:
           Write-Host "Using RCC from cache."
         }
     
+  
     - name: Generate env. hash
       id: generate_env_hash
       shell: powershell
       run: |
         $hash = .\rcc.exe ht hash conda.yaml --silent
-        echo "::set-output name=env_hash::$hash"
-
-    - name: Cache folders
+        echo "env_hash=$hash" >> $GITHUB_STATE
+  
+    - name: Cache environment
       uses: actions/cache@v2
       with:
         path: |
@@ -53,6 +54,17 @@ jobs:
           $Env:LOCALAPPDATA\robocorp\holotree
         key: ${{ runner.os }}-env-${{ steps.generate_env_hash.outputs.env_hash }}
         restore-keys: ${{ runner.os }}-env-
+  
+    - name: Build env.
+      shell: powershell
+      run: |
+        .\rcc.exe ht env conda.yaml
+        $folderPath = "$Env:LOCALAPPDATA\robocorp\hololib"
+        $folderSize = (Get-ChildItem -Recurse $folderPath | Measure-Object -Property Length -Sum).Sum
+        Write-Host "Size of $folderPath: $($folderSize / 1MB) MB"
+        $folderPath = "$Env:LOCALAPPDATA\robocorp\holotree"
+        $folderSize = (Get-ChildItem -Recurse $folderPath | Measure-Object -Property Length -Sum).Sum
+        Write-Host "Size of $folderPath: $($folderSize / 1MB) MB"
 
     - name: Run
       shell: powershell  
