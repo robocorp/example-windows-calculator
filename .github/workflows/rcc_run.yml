@@ -34,16 +34,17 @@ jobs:
         if (-not (Test-Path -Path 'rcc.exe')) {
           Write-Host "RCC not found in cache. Downloading..."
           Invoke-WebRequest -Uri 'https://downloads.robocorp.com/rcc/releases/latest/windows64/rcc.exe' -OutFile 'rcc.exe'
+          .\rcc.exe version
         } else {
           Write-Host "Using RCC from cache."
         }
-    
   
     - name: Generate env. hash
       id: generate_env_hash
       shell: powershell
       run: |
         $hash = .\rcc.exe ht hash conda.yaml --silent
+        Write-Host "Environment hash: $hash"
         echo "env_hash=$hash" >> $GITHUB_STATE
   
     - name: Cache environment
@@ -57,15 +58,11 @@ jobs:
   
     - name: Build env.
       shell: powershell
-      run: |
+      run: | 
+        .\rcc.exe ht catalogs
         .\rcc.exe ht env conda.yaml
-        $folderPath = "$Env:LOCALAPPDATA\robocorp\hololib"
-        $folderSize = (Get-ChildItem -Recurse $folderPath | Measure-Object -Property Length -Sum).Sum
-        Write-Host "Size of $folderPath: $($folderSize / 1MB) MB"
-        $folderPath = "$Env:LOCALAPPDATA\robocorp\holotree"
-        $folderSize = (Get-ChildItem -Recurse $folderPath | Measure-Object -Property Length -Sum).Sum
-        Write-Host "Size of $folderPath: $($folderSize / 1MB) MB"
-
+        .\rcc.exe ht catalogs
+  
     - name: Run
       shell: powershell  
       run: .\rcc.exe run --task "Demo Windows Locators with Calculator"
