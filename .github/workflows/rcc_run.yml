@@ -20,10 +20,23 @@ jobs:
     steps:
     - name: Checkout repository and submodules
       uses: actions/checkout@v3
-      
+    
+    - name: Cache RCC executable
+      uses: actions/cache@v2
+      with:
+        path: rcc.exe
+        key: ${{ runner.os }}-rcc-${{ hashFiles('rcc.exe') }}
+        restore-keys: ${{ runner.os }}-rcc-${{ hashFiles('rcc.exe') }}
+
     - name: Get RCC
       shell: powershell
-      run: Invoke-WebRequest -Uri 'https://downloads.robocorp.com/rcc/releases/latest/windows64/rcc.exe' -OutFile 'rcc.exe'
+      run: |
+        if [ ! -f rcc.exe ]; then
+          Write-Host "RCC not found in cache. Downloading..."
+          Invoke-WebRequest -Uri 'https://downloads.robocorp.com/rcc/releases/latest/windows64/rcc.exe' -OutFile 'rcc.exe'
+        else
+          Write-Host "Using RCC from cache."
+        fi
 
     - name: Run
       shell: powershell  
