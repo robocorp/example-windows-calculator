@@ -2,11 +2,7 @@ name: Windows Test Run
 
 on:
   workflow_dispatch:
-    inputs:
-      branch_name:
-        description: 'Branch name to run the workflow on'
-        required: true
-        default: 'master'
+    
   push:
     branches:
       - "master"
