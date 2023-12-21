@@ -1,0 +1,35 @@
+name: Windows Test Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'Branch name to run the workflow on'
+        required: true
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v3
+      
+    - name: Get RCC
+      shell: powershell
+      run: Invoke-WebRequest -Uri 'https://downloads.robocorp.com/rcc/releases/latest/windows64/rcc.exe' -OutFile 'rcc.exe'
+
+    - name: Run
+      shell: powershell  
+      run: .\rcc.exe run --task "Demo Windows Locators with Calculator"
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: log.html
+        path: output/log.html
