@@ -14,7 +14,7 @@ on:
       - "master"
 
 jobs:
-  build:
+  windows-test-run:
     runs-on: windows-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
       with:
         path: rcc.exe
         key: ${{ runner.os }}-rcc-${{ hashFiles('rcc.exe') }}
-        restore-keys: ${{ runner.os }}-rcc-${{ hashFiles('rcc.exe') }}
+        restore-keys: ${{ runner.os }}-rcc-
 
     - name: Get RCC
       shell: powershell
@@ -42,7 +42,7 @@ jobs:
       id: generate_env_hash
       shell: powershell
       run: |
-        $hash = rcc ht hash conda.yaml --silent
+        $hash = .\rcc.exe ht hash conda.yaml --silent
         echo "::set-output name=env_hash::$hash"
 
     - name: Cache folders
@@ -52,7 +52,7 @@ jobs:
           $Env:LOCALAPPDATA\robocorp\hololib
           $Env:LOCALAPPDATA\robocorp\holotree
         key: ${{ runner.os }}-env-${{ steps.generate_env_hash.outputs.env_hash }}
-        restore-keys: ${{ runner.os }}-env-${{ steps.generate_env_hash.outputs.env_hash }}
+        restore-keys: ${{ runner.os }}-env-
 
     - name: Run
       shell: powershell  
