@@ -31,12 +31,28 @@ jobs:
     - name: Get RCC
       shell: powershell
       run: |
-        if [ ! -f rcc.exe ]; then
+        if (-not (Test-Path -Path 'rcc.exe')) {
           Write-Host "RCC not found in cache. Downloading..."
           Invoke-WebRequest -Uri 'https://downloads.robocorp.com/rcc/releases/latest/windows64/rcc.exe' -OutFile 'rcc.exe'
-        else
+        } else {
           Write-Host "Using RCC from cache."
-        fi
+        }
+    
+    - name: Generate env. hash
+      id: generate_env_hash
+      shell: powershell
+      run: |
+        $hash = rcc ht hash conda.yaml --silent
+        echo "::set-output name=env_hash::$hash"
+
+    - name: Cache folders
+      uses: actions/cache@v2
+      with:
+        path: |
+          $Env:LOCALAPPDATA\robocorp\hololib
+          $Env:LOCALAPPDATA\robocorp\holotree
+        key: ${{ runner.os }}-env-${{ steps.generate_env_hash.outputs.env_hash }}
+        restore-keys: ${{ runner.os }}-env-${{ steps.generate_env_hash.outputs.env_hash }}
 
     - name: Run
       shell: powershell  
