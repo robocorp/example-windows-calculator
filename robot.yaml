@@ -1,9 +1,6 @@
 tasks:
-  Demo Windows Locators:
+  Demo Windows Locators with Calculator:
     shell: python -m robocorp.tasks run tasks.py
-
-  Image Based Calculator Demo:
-    shell: python -m robocorp.tasks run image-based.py
 
 condaConfigFile: conda.yaml
 artifactsDir: output
