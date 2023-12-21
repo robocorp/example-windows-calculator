@@ -26,7 +26,6 @@ jobs:
       with:
         path: rcc.exe
         key: ${{ runner.os }}-rcc-${{ hashFiles('rcc.exe') }}
-        restore-keys: ${{ runner.os }}-rcc-
 
     - name: Get RCC
       shell: powershell
@@ -54,13 +53,12 @@ jobs:
           $Env:LOCALAPPDATA\robocorp\hololib
           $Env:LOCALAPPDATA\robocorp\holotree
         key: ${{ runner.os }}-env-${{ steps.generate_env_hash.outputs.env_hash }}
-        restore-keys: ${{ runner.os }}-env-
   
     - name: Build env.
       shell: powershell
       run: | 
         .\rcc.exe ht catalogs
-        .\rcc.exe ht env conda.yaml
+        .\rcc.exe ht vars conda.yaml
         .\rcc.exe ht catalogs
   
     - name: Run
