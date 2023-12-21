@@ -6,12 +6,12 @@ on:
       branch_name:
         description: 'Branch name to run the workflow on'
         required: true
-  push:
-    branches:
-      - "master"
-  pull_request:
-    branches:
-      - "master"
+#  push:
+#    branches:
+#      - "master"
+#  pull_request:
+#    branches:
+#      - "master"
 
 jobs:
   windows-test-run:
