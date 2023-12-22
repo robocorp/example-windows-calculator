@@ -22,11 +22,11 @@ def calculate_using_ids(window: WindowElement, first: str, second: str ):
     Automation using locators based on automation id -field values is a solid way
     ...if the target app provides static automation ids
     """
-    window.click('id:clearEntryButton or name:Clear')
-    window.click(f'id:num{first}Button or name:{first}')
-    window.click('id:plusButton or name:Add')
-    window.click(f'id:num{second}Button or name:{second}')
-    window.click('id:equalButton or name:Equals')
+    window.click('id: "clearEntryButton" or name: "Clear"')
+    window.click(f'id: "num{first}Button" or name: "{first}"')
+    window.click('id: "plusButton" or name: "Add"')
+    window.click(f'id: "num{second}Button" or name: "{second}"')
+    window.click('id: "equalButton" or name: "Equals"')
 
 def calculate_using_image_locators(window: WindowElement, first: str, second: str):
     """
@@ -36,17 +36,17 @@ def calculate_using_image_locators(window: WindowElement, first: str, second: st
 
     """
     try:
-        window.click('id:clearEntryButton or name:Clear')
+        window.click('id: "clearEntryButton" or name: "Clear"')
         desktop = Desktop()
         desktop.click(f'alias:{first}')
         desktop.click('alias:plus')
         desktop.click(f'alias:{second}')
         desktop.click('alias:eq')
-    except Exception as e:
-        log.critical('Image-based locator not found')
+    except Exception:
         # Image-based solution fails on most machines, so we catch 
         # the error and add it to the log, but do not fail the execution.
-        # Normal operation here should be: 'raise e' to cause the failure.
+        # Normal operation here should be to raise the exception here or not to catch it.
+        log.critical('Image-based locator not found')
 
 def log_results(window: WindowElement, screenshot_file: str):
     result = window.get_value('id:CalculatorResults or name: "Result"')
