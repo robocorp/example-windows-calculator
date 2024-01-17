@@ -1,0 +1,74 @@
+name: Windows Test Run
+
+on:
+  workflow_dispatch:
+    
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  windows-test-run:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v3
+
+    - name: Get RCC version
+      id: rcc-version
+      shell: powershell
+      run: |
+        $rcc_version = curl.exe -Ls https://downloads.robocorp.com/rcc/releases/latest/version.txt
+        echo "::set-output name=rcc_version::$rcc_version"
+
+    - name: Cache RCC executable
+      uses: actions/cache@v3
+      with:
+        path: rcc.exe
+        key: ${{ runner.os }}-rcc-${{ steps.rcc-version.outputs.rcc_version }}
+        restore-keys: ${{ runner.os }}-rcc-
+
+    - name: Get RCC
+      shell: powershell
+      run: |
+        if (-not (Test-Path -Path 'rcc.exe')) {
+          curl.exe -o rcc.exe https://downloads.robocorp.com/rcc/releases/latest/windows64/rcc.exe
+          .\rcc.exe version
+        } else {
+          echo "Using RCC from cache."
+        }
+        echo "caching: $env:LOCALAPPDATA\robocorp\hololib"
+        echo "caching: $env:LOCALAPPDATA\robocorp\holotree"
+  
+    - name: Cache hololib
+      uses: actions/cache@v3
+      with:
+        path: $env:LOCALAPPDATA\robocorp\hololib
+        key: ${{ runner.os }}-hololib-${{ hashFiles('**/conda.yaml') }}
+        restore-keys: ${{ runner.os }}-hololib-
+
+    - name: Cache holotree
+      uses: actions/cache@v3
+      with:
+        path: $env:LOCALAPPDATA\robocorp\holotree
+        key: ${{ runner.os }}-holotree-${{ hashFiles('**/conda.yaml') }}
+        restore-keys: ${{ runner.os }}-holotree-
+  
+    - name: Build env.
+      shell: powershell
+      run: | 
+        .\rcc.exe ht vars conda.yaml --space github-action
+        .\rcc.exe ht catalogs
+  
+    - name: Run task
+      shell: powershell  
+      run: .\rcc.exe run --task "Demo Windows Locators with Calculator" --space github-action
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: output
+        path: ./output/**
