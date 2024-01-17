@@ -42,11 +42,11 @@ def calculate_using_image_locators(window: WindowElement, first: str, second: st
         desktop.click('alias:plus')
         desktop.click(f'alias:{second}')
         desktop.click('alias:eq')
-    except Exception:
+    except Exception as exc:
         # Image-based solution fails on most machines, so we catch 
         # the error and add it to the log, but do not fail the execution.
         # Normal operation here should be to raise the exception here or not to catch it.
-        log.critical('Image-based locator not found')
+        log.critical(f'Image-based locator not found due to {exc!r}')
 
 def log_results(window: WindowElement, screenshot_file: str):
     result = window.get_value('id:CalculatorResults or name: "Result"')
