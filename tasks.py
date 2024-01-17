@@ -1,8 +1,10 @@
+import os
+
+from robocorp import log, windows
 from robocorp.tasks import task
-from robocorp import windows, log
 from robocorp.windows import WindowElement
 from RPA.Desktop import Desktop
-import os
+
 
 def open_calculator() -> WindowElement:
     windows.desktop().windows_run("calc.exe")
