@@ -37,6 +37,9 @@ def calculate_using_image_locators(window: WindowElement, first: str, second: st
     Changes to resolution, themes and UI changes all can break the automation.
 
     """
+
+
+    print("testing")
     try:
         window.click('id: "clearEntryButton" or name: "Clear"')
         desktop = Desktop()
